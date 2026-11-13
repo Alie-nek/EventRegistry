@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Карточка лица</h3>
+<div class="card mb-3">
+    <div class="card-body">
+        <p><strong>Регистрационный номер:</strong> {{ person.registration_number }}</p>
+        <p><strong>ФИО:</strong> {{ person.last_name }} {{ person.first_name }} {{ person.middle_name or '' }}</p>
+        <p><strong>Адрес:</strong> {{ person.address }}</p>
+        <p><strong>Количество судимостей:</strong> {{ person.convictions_count }}</p>
+    </div>
+</div>
+
+<h5>Происшествия с участием лица ({{ incidents|length }})</h5>
+{% if incidents %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Рег. номер</th>
+            <th>Дата</th>
+            <th>Тип</th>
+            <th>Фабула</th>
+            <th>Роль</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for inc in incidents %}
+    <tr>
+        <td>{{ inc.registration_number }}</td>
+        <td>{{ inc.registration_date }}</td>
+        <td>{{ inc.incident_type }}</td>
+        <td>{{ inc.description[:60] }}</td>
+        <td>
+            {% for p in inc.participations %}
+                {% if p.person_id == person.person_id %}
+                    {{ p.role }}
+                {% endif %}
+            {% endfor %}
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="alert alert-info">Лицо не участвовало ни в одном происшествии.</div>
+{% endif %}
+
+<a href="{{ url_for('persons') }}" class="btn btn-secondary">Назад к списку лиц</a>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>{{ title }}</h3>
+<form method="post" class="col-md-8">
+    {{ form.hidden_tag() }}
+
+    <div class="mb-3">
+        {{ form.registration_number.label }}
+        {{ form.registration_number(class="form-control") }}
+        {% for error in form.registration_number.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="mb-3">
+        {{ form.last_name.label }}
+        {{ form.last_name(class="form-control") }}
+        {% for error in form.last_name.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="mb-3">
+        {{ form.first_name.label }}
+        {{ form.first_name(class="form-control") }}
+        {% for error in form.first_name.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="mb-3">
+        {{ form.middle_name.label }}
+        {{ form.middle_name(class="form-control") }}
+        {% for error in form.middle_name.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="mb-3">
+        {{ form.address.label }}
+        {{ form.address(class="form-control") }}
+        {% for error in form.address.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="mb-3">
+        {{ form.convictions_count.label }}
+        {{ form.convictions_count(class="form-control") }}
+        {% for error in form.convictions_count.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    {{ form.submit(class="btn btn-primary") }}
+    <a href="{{ url_for('persons') }}" class="btn btn-secondary">Отмена</a>
+</form>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Связи «лицо — происшествие»</h3>
+
+{% if current_user.role == 'operator' %}
+<form method="post" class="row g-3 mb-4">
+    {{ form.hidden_tag() }}
+    <div class="col-md-4">{{ form.incident_id.label }} {{ form.incident_id(class="form-select") }}</div>
+    <div class="col-md-3">{{ form.person_id.label }} {{ form.person_id(class="form-select") }}</div>
+    <div class="col-md-2">{{ form.role.label }} {{ form.role(class="form-select") }}</div>
+    <div class="col-md-2 d-flex align-items-end">{{ form.submit(class="btn btn-primary w-100") }}</div>
+</form>
+{% endif %}
+
+<table class="table table-striped">
+    <thead><tr><th>Происшествие</th><th>Лицо</th><th>Роль</th><th></th></tr></thead>
+    <tbody>
+    {% for l in links %}
+    <tr>
+        <td>{{ l.incident.registration_number }}</td>
+        <td>{{ l.person.last_name }} {{ l.person.first_name }}</td>
+        <td>{{ l.role }}</td>
+        <td>
+            {% if current_user.role == 'operator' %}
+            <form method="post" action="{{ url_for('link_delete', id=l.participation_id) }}" class="d-inline"
+                  onsubmit="return confirm('Удалить связь?');">
+                <button class="btn btn-sm btn-danger">Удалить</button>
+            </form>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

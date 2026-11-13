@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Статистика</h3>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-3"><div class="card-body">
+            <h5>Происшествия за период</h5>
+            <form method="post">
+                {{ period_form.hidden_tag() }}
+                <div class="mb-3">{{ period_form.start_date.label }} {{ period_form.start_date(class="form-control") }}</div>
+                <div class="mb-3">{{ period_form.end_date.label }} {{ period_form.end_date(class="form-control") }}</div>
+                {{ period_form.submit(class="btn btn-primary") }}
+            </form>
+            {% if period_count is not none %}
+            <div class="alert alert-info mt-3">Количество происшествий: <strong>{{ period_count }}</strong></div>
+            {% endif %}
+        </div></div>
+    </div>
+    <div class="col-md-6">
+        <div class="card mb-3"><div class="card-body">
+            <h5>Происшествия по лицу</h5>
+            <form method="post">
+                {{ person_form.hidden_tag() }}
+                <div class="mb-3">{{ person_form.person_id.label }} {{ person_form.person_id(class="form-select") }}</div>
+                {{ person_form.submit(class="btn btn-primary") }}
+            </form>
+            {% if person_count is not none and person_form.person_id.data %}
+<div class="alert alert-info mt-3">
+    Количество происшествий: <strong>{{ person_count }}</strong><br>
+    <a href="{{ url_for('person_detail', id=person_form.person_id.data) }}" class="btn btn-sm btn-outline-primary mt-2">
+        Посмотреть список происшествий
+    </a>
+</div>
+{% endif %}
+        </div></div>
+    </div>
+</div>
+{% endblock %}

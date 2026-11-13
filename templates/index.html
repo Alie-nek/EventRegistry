@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Добро пожаловать в EventRegistry</h2>
+<div class="row mt-4">
+    <div class="col-md-4"><div class="card"><div class="card-body">
+        <h5>Происшествия</h5><p class="display-6">{{ incident_count }}</p>
+    </div></div></div>
+    <div class="col-md-4"><div class="card"><div class="card-body">
+        <h5>Лица</h5><p class="display-6">{{ person_count }}</p>
+    </div></div></div>
+</div>
+{% endblock %}

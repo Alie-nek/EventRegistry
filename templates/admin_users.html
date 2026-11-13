@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Пользователи системы</h3>
+<table class="table table-striped">
+    <thead><tr><th>ID</th><th>Логин</th><th>Роль</th><th></th></tr></thead>
+    <tbody>
+    {% for u in users %}
+    <tr>
+        <td>{{ u.user_id }}</td>
+        <td>{{ u.login }}</td>
+        <td>
+            {% if u.role == 'admin' %}Администратор
+            {% elif u.role == 'operator' %}Оператор
+            {% else %}Просмотр{% endif %}
+        </td>
+        <td>
+            <form method="post" action="{{ url_for('admin_user_delete', id=u.user_id) }}" class="d-inline"
+                  onsubmit="return confirm('Удалить пользователя?');">
+                <button class="btn btn-sm btn-danger">Удалить</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<h5 class="mt-4">Добавить пользователя</h5>
+<form method="post" action="{{ url_for('admin_user_add') }}" class="row g-3">
+    {{ form.hidden_tag() }}
+    <div class="col-md-3">{{ form.login(class="form-control", placeholder="Логин") }}</div>
+    <div class="col-md-3">{{ form.password(class="form-control", placeholder="Пароль") }}</div>
+    <div class="col-md-3">{{ form.role(class="form-select") }}</div>
+    <div class="col-md-2">{{ form.submit(class="btn btn-success w-100") }}</div>
+</form>
+{% endblock %}

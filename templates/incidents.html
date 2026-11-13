@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between mb-3">
+    <h3>Происшествия</h3>
+    {% if current_user.role == 'operator' %}
+    <a href="{{ url_for('incident_add') }}" class="btn btn-success">Добавить</a>
+    {% endif %}
+</div>
+<table class="table table-striped">
+    <thead><tr><th>Рег. номер</th><th>Дата</th><th>Тип</th><th>Фабула</th><th>Решение</th><th></th></tr></thead>
+    <tbody>
+    {% for i in incidents %}
+    <tr>
+        <td>{{ i.registration_number }}</td>
+        <td>{{ i.registration_date }}</td>
+        <td>{{ i.incident_type }}</td>
+        <td>{{ i.description[:60] }}</td>
+        <td>
+    {% if i.decision %}
+        {% if i.decision.decision_type == 'refused' %}
+            Отказано в возбуждении уголовного дела
+        {% elif i.decision.decision_type == 'approved' %}
+            Удовлетворено ходатайство о возбуждении уголовного дела
+        {% elif i.decision.decision_type == 'territorial' %}
+            Материал направлен по территориальному признаку
+        {% else %}
+            {{ i.decision.decision_type }}
+        {% endif %}
+    {% else %}
+        —
+    {% endif %}
+</td>
+        <td>
+            {% if current_user.role == 'operator' %}
+            <a href="{{ url_for('incident_edit', id=i.incident_id) }}" class="btn btn-sm btn-warning">Изменить</a>
+            <form method="post" action="{{ url_for('incident_delete', id=i.incident_id) }}" class="d-inline"
+                  onsubmit="return confirm('Удалить происшествие?');">
+                <button class="btn btn-sm btn-danger">Удалить</button>
+            </form>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

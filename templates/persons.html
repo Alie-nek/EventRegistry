@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between mb-3">
+    <h3>Лица</h3>
+    {% if current_user.role == 'operator' %}
+    <a href="{{ url_for('person_add') }}" class="btn btn-success">Добавить</a>
+    {% endif %}
+</div>
+<table class="table table-striped">
+    <thead><tr><th>Рег. номер</th><th>ФИО</th><th>Адрес</th><th>Судимости</th><th></th></tr></thead>
+    <tbody>
+    {% for p in persons %}
+    <tr>
+        <td>{{ p.registration_number }}</td>
+        <td>
+    <a href="{{ url_for('person_detail', id=p.person_id) }}">
+        {{ p.last_name }} {{ p.first_name }} {{ p.middle_name or '' }}
+    </a>
+</td>
+        <td>{{ p.address }}</td>
+        <td>{{ p.convictions_count }}</td>
+        <td>
+            {% if current_user.role == 'operator' %}
+            <a href="{{ url_for('person_edit', id=p.person_id) }}" class="btn btn-sm btn-warning">Изменить</a>
+            <form method="post" action="{{ url_for('person_delete', id=p.person_id) }}" class="d-inline"
+                  onsubmit="return confirm('Удалить лицо?');">
+                <button class="btn btn-sm btn-danger">Удалить</button>
+            </form>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

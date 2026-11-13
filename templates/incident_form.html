@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>{{ title }}</h3>
+<form method="post" class="col-md-8">
+    {{ form.hidden_tag() }}
+    
+    <div class="mb-3">{{ form.registration_number.label }} {{ form.registration_number(class="form-control") }}</div>
+    <div class="mb-3">{{ form.registration_date.label }} {{ form.registration_date(class="form-control") }}</div>
+    <div class="mb-3">{{ form.incident_type.label }} {{ form.incident_type(class="form-select") }}</div>
+    <div class="mb-3">{{ form.description.label }} {{ form.description(class="form-control", rows=3) }}</div>
+    
+    <hr>
+    
+    <div class="mb-3">{{ form.decision_type.label }} {{ form.decision_type(class="form-select") }}</div>
+    
+    <!-- Блок для номера дела (скрыт по умолчанию) -->
+    <div class="mb-3" id="case_number_block" style="display: none;">
+        {{ form.case_number.label }} 
+        {{ form.case_number(class="form-control") }}
+        <div class="form-text text-danger" id="case_number_error" style="display: none;">
+            Для данного решения номер дела обязателен.
+        </div>
+    </div>
+
+    {{ form.submit(class="btn btn-primary") }}
+    <a href="{{ url_for('incidents') }}" class="btn btn-secondary">Отмена</a>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const decisionSelect = document.getElementById('decision_type');
+        const caseNumberBlock = document.getElementById('case_number_block');
+        const caseNumberInput = document.getElementById('case_number');
+        const caseNumberError = document.getElementById('case_number_error');
+
+        function toggleCaseNumber() {
+            if (decisionSelect.value === 'approved') {
+                caseNumberBlock.style.display = 'block';
+                caseNumberInput.setAttribute('required', 'required');
+            } else {
+                caseNumberBlock.style.display = 'none';
+                caseNumberInput.removeAttribute('required');
+                caseNumberInput.value = ''; 
+                caseNumberError.style.display = 'none';
+            }
+        }
+
+        toggleCaseNumber();
+
+        decisionSelect.addEventListener('change', toggleCaseNumber);
+    });
+</script>
+{% endblock %}
