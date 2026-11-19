@@ -28,8 +28,8 @@ EventRegistry/
 ├── app.py                  # Основной файл приложения (маршруты, модели, формы)
 ├── config.py               # Конфигурация приложения
 ├── requirements.txt        # Зависимости Python
-├── .env.example            # Пример файла с переменными окружения
 ├── .gitignore              # Исключения для Git
+├── .dockerignore           # Исключения для Docker
 ├── Dockerfile              # Инструкция для сборки Docker-образа
 ├── docker-compose.yml      # Конфигурация для запуска через Docker Compose
 ├── README.md               # Этот файл
