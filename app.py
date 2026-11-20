@@ -562,6 +562,13 @@ def admin_user_delete(id):
     return redirect(url_for('admin_users'))
 
 
+# ==================== HEALTHCHECK ====================
+
+@app.route('/health')
+def health():
+    return {'status': 'healthy', 'service': 'eventregistry'}, 200
+    
+
 # ==================== ЗАПУСК ====================
 
 if __name__ == '__main__':
