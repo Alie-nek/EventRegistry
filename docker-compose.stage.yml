@@ -1,0 +1,28 @@
+name: eventregistry-stage
+
+services:
+  app:
+    image: ulipi29/eventregistry:dev
+    container_name: eventregistry_stage_app
+    ports:
+      - "8080:5000"
+    environment:
+      - FLASK_SECRET_KEY=super_secret_lab_key_2024
+      - DATABASE_URL=postgresql://eventuser:eventpass@db:5432/eventregistry
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: postgres:15-alpine
+    container_name: eventregistry_stage_db
+    environment:
+      - POSTGRES_USER=eventuser
+      - POSTGRES_PASSWORD=eventpass
+      - POSTGRES_DB=eventregistry
+    volumes:
+      - stage_pg_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  stage_pg_data:
